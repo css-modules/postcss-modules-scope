@@ -58,7 +58,7 @@ const processor = postcss.plugin('postcss-modules-scope', function(options) {
     const generateScopedName =
       (options && options.generateScopedName) || processor.generateScopedName;
 
-    const exports = {};
+    let exports = Object.create(null);
 
     function exportScopedName(name) {
       const scopedName = generateScopedName(
