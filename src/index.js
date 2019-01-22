@@ -67,6 +67,9 @@ const processor = postcss.plugin('postcss-modules-scope', function(options) {
         css.source.input.css
       );
       exports[name] = exports[name] || [];
+      if (typeof exports[name] === 'function') {
+        exports[name] = [];
+      }
       if (exports[name].indexOf(scopedName) < 0) {
         exports[name].push(scopedName);
       }
