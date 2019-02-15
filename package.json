@@ -14,7 +14,7 @@
     "precover": "yarn lint",
     "cover": "nyc mocha",
     "travis": "yarn cover",
-    "prepublish": "yarn run test"
+    "prepublishOnly": "yarn run test"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,8 @@
   "homepage": "https://github.com/css-modules/postcss-modules-scope",
   "dependencies": {
     "css-selector-tokenizer": "^0.7.0",
-    "postcss": "^7.0.6"
+    "postcss": "^7.0.6",
+    "postcss-modules-values": "^2.0.0"
   },
   "devDependencies": {
     "chokidar-cli": "^1.0.1",
@@ -44,7 +45,7 @@
     "coveralls": "^3.0.2",
     "css-selector-parser": "^1.0.4",
     "eslint": "^5.9.0",
-    "nyc": "^13.1.0",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
   }
 }

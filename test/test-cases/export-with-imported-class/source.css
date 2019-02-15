@@ -1,0 +1,6 @@
+:import("./file.css") {
+  imported_otherClass: otherClass;
+}
+:local(.exportName) > :local(.imported_otherClass) {
+  color: green;
+}
