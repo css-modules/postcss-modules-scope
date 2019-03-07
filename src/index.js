@@ -105,7 +105,7 @@ const processor = postcss.plugin('postcss-modules-scope', function(options) {
 
       exports[key] = exports[key] || [];
 
-      if (exports[key].indexOf(value) < 0) {
+      if (Array.isArray(exports[key]) && exports[key].indexOf(value) < 0) {
         exports[key].push(value);
       }
 
