@@ -22,10 +22,10 @@ function getSingleLocalNamesForComposes(root) {
     ) {
       throw new Error(
         'composition is only allowed when selector is single :local class name not in "' +
-          root +
-          '", "' +
-          node +
-          '" is weird'
+        root +
+        '", "' +
+        node +
+        '" is weird'
       );
     }
 
@@ -34,10 +34,10 @@ function getSingleLocalNamesForComposes(root) {
     if (node.type !== 'selector' || node.length !== 1) {
       throw new Error(
         'composition is only allowed when selector is single :local class name not in "' +
-          root +
-          '", "' +
-          node +
-          '" is weird'
+        root +
+        '", "' +
+        node +
+        '" is weird'
       );
     }
 
@@ -47,10 +47,10 @@ function getSingleLocalNamesForComposes(root) {
       // 'id' is not possible, because you can't compose ids
       throw new Error(
         'composition is only allowed when selector is single :local class name not in "' +
-          root +
-          '", "' +
-          node +
-          '" is weird'
+        root +
+        '", "' +
+        node +
+        '" is weird'
       );
     }
 
@@ -74,13 +74,13 @@ function unescape(str) {
       ? escaped
       : high < 0
         ? // BMP codepoint
-          String.fromCharCode(high + 0x10000)
+        String.fromCharCode(high + 0x10000)
         : // Supplemental Plane codepoint (surrogate pair)
-          String.fromCharCode((high >> 10) | 0xd800, (high & 0x3ff) | 0xdc00);
+        String.fromCharCode((high >> 10) | 0xd800, (high & 0x3ff) | 0xdc00);
   });
 }
 
-const processor = postcss.plugin('postcss-modules-scope', function(options) {
+const processor = postcss.plugin('postcss-modules-scope', function (options) {
   return css => {
     const generateScopedName =
       (options && options.generateScopedName) || processor.generateScopedName;
@@ -264,13 +264,15 @@ const processor = postcss.plugin('postcss-modules-scope', function(options) {
 
     if (exportedNames.length > 0) {
       const exportRule = postcss.rule({ selector: ':export' });
-
-      exportedNames.forEach(exportedName =>
-        exportRule.append({
-          prop: exportedName,
-          value: exports[exportedName].join(' '),
-          raws: { before: '\n  ' },
-        })
+      exportedNames.forEach(exportedName => {
+        if (Array.isArray(exports[exportedName])) {
+          exportRule.append({
+            prop: exportedName,
+            value: exports[exportedName].join(' '),
+            raws: { before: '\n  ' },
+          })
+        }
+      }
       );
 
       css.append(exportRule);
@@ -278,7 +280,7 @@ const processor = postcss.plugin('postcss-modules-scope', function(options) {
   };
 });
 
-processor.generateScopedName = function(name, path) {
+processor.generateScopedName = function (name, path) {
   const sanitisedPath = path
     .replace(/\.[^\.\/\\]+$/, '')
     .replace(/[\W_]+/g, '_')
@@ -287,7 +289,7 @@ processor.generateScopedName = function(name, path) {
   return `_${sanitisedPath}__${name}`.trim();
 };
 
-processor.generateExportEntry = function(name, scopedName) {
+processor.generateExportEntry = function (name, scopedName) {
   return {
     key: unescape(name),
     value: unescape(scopedName),
