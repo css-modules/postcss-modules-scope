@@ -1,0 +1,80 @@
+.\1F600 {
+  color: red;
+}
+
+.\1F600  .\1F600 {
+  color: red;
+}
+
+.\1F600  .\1F600  .\1F600 {
+  color: red;
+}
+
+.\1F600 A {
+  color: red;
+}
+
+.\1F600  .\1F600 {
+  color: red;
+}
+
+.\1F600  .\1F600 {
+  color: red;
+}
+
+.\1F600  .\1F600  .\1F600 {
+  color: red;
+}
+
+.\1F600  .\1F600 A .\1F600 {
+  color: red;
+}
+
+#\1F600  #\1F600  #\1F600 {
+  color: red;
+}
+
+#\1F600  #\1F600 A #\1F600 {
+  color: red;
+}
+
+.a .\1F600  b {
+  color: red;
+}
+
+.\1F600 > .\1F600 > .\1F600 {
+  color: red;
+}
+
+.\1F600 .\1F600 {
+  color: red;
+}
+
+.\1F600.\1F600 {
+  color: red;
+}
+
+.\1F600  .\1F600 {
+  color: red;
+}
+
+.\1F600  .a {
+  color: red;
+}
+
+.\1F600.a {
+  color: red;
+}
+
+.a .\1F600 {
+  color: red;
+}
+
+.a.\1F600 {
+  color: red;
+}
+
+:export {
+  smile: 😀;
+  smile_with_A: 😀A;
+}
