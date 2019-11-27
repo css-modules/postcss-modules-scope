@@ -44,6 +44,7 @@
     "postcss-selector-parser": "^6.0.0"
   },
   "devDependencies": {
+    "cssesc": "^3.0.0",
     "chokidar-cli": "^1.0.1",
     "codecov.io": "^0.1.2",
     "coveralls": "^3.0.2",

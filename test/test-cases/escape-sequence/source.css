@@ -1,0 +1,75 @@
+:local(.smile) {
+  color: red;
+}
+
+:local(.smile) :local(.smile) {
+  color: red;
+}
+
+:local(.smile) :local(.smile) :local(.smile) {
+  color: red;
+}
+
+:local(.smile_with_A) {
+  color: red;
+}
+
+.\1F600  :local(.smile) {
+  color: red;
+}
+
+:local(.smile) .\1F600 {
+  color: red;
+}
+
+.\1F600  :local(.smile) .\1F600 {
+  color: red;
+}
+
+.\1F600  :local(.smile_with_A) .\1F600 {
+  color: red;
+}
+
+#\1F600  :local(#smile) #\1F600 {
+  color: red;
+}
+
+#\1F600  :local(#smile_with_A) #\1F600 {
+  color: red;
+}
+
+.a :local(.smile) b {
+  color: red;
+}
+
+:local(.smile) > :local(.smile) > :local(.smile) {
+  color: red;
+}
+
+.\1F600 :local(.smile) {
+  color: red;
+}
+
+.\1F600:local(.smile) {
+  color: red;
+}
+
+.\1F600  :local(.smile) {
+  color: red;
+}
+
+:local(.smile) .a {
+  color: red;
+}
+
+:local(.smile).a {
+  color: red;
+}
+
+.a :local(.smile) {
+  color: red;
+}
+
+.a:local(.smile) {
+  color: red;
+}

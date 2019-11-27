@@ -152,6 +152,17 @@ const processor = postcss.plugin('postcss-modules-scope', function(options) {
             // non-container node
             selector.first.spaces = node.spaces;
 
+            const nextNode = node.next();
+
+            if (
+              nextNode &&
+              nextNode.type === 'combinator' &&
+              nextNode.value === ' ' &&
+              /\\[A-F0-9]{1,6}$/.test(selector.last.value)
+            ) {
+              selector.last.spaces.after = ' ';
+            }
+
             node.replaceWith(selector);
 
             return;
