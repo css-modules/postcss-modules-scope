@@ -1,0 +1,23 @@
+#exportName {
+  color: green;
+}
+
+#exportName:hover {
+  color: red;
+}
+
+@media screen {
+  #exportName-2 {
+    background: red;
+  }
+}
+
+#_input__exportName-3 {
+  color: green;
+}
+
+:export {
+  exportName: exportName;
+  exportName-2: exportName-2;
+  exportName-3: _input__exportName-3;
+}

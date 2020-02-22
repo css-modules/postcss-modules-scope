@@ -1,0 +1,17 @@
+#exportName {
+  color: green;
+}
+
+#exportName:hover {
+  color: red;
+}
+
+@media screen {
+  #exportName-2 {
+    background: red;
+  }
+}
+
+:local(#exportName-3) {
+  color: green;
+}

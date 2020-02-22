@@ -173,6 +173,7 @@ const processor = postcss.plugin('postcss-modules-scope', function(options) {
           node.each(traverseNode);
           break;
         }
+        case 'id':
         case 'class': 
           exports[node.value] = [node.value];
           break;
