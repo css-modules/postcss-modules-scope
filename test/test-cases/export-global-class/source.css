@@ -12,6 +12,6 @@
   }
 }
 
-:export {
-  exportName: exportName;
+:local(.testLocal) {
+  color: blue;
 }

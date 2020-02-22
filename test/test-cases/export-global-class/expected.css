@@ -12,6 +12,11 @@
   }
 }
 
+._input__testLocal {
+  color: blue;
+}
+
 :export {
   exportName: exportName;
+  testLocal: _input__testLocal;
 }

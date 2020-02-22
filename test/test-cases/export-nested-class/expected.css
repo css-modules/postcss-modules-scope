@@ -9,5 +9,6 @@
 :export {
   exportName: _input__exportName;
   otherExportName: _input__otherExportName;
+  global: global;
   otherExportName2: _input__otherExportName2;
 }
