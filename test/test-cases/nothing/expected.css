@@ -11,7 +11,3 @@
     background: red;
   }
 }
-
-:export {
-  exportName: exportName;
-}
