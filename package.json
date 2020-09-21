@@ -13,7 +13,7 @@
     "pretest": "yarn lint",
     "test": "jest",
     "autotest": "jest --watch",
-    "cover": "jest --coverage src/index.js",
+    "cover": "jest --coverage --collectCoverageFrom=\"src/**/*\"",
     "ci": "yarn pretest && yarn cover",
     "prepublishOnly": "yarn test"
   },
