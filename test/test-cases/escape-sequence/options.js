@@ -1,6 +1,8 @@
 const cssesc = require('cssesc');
 
+//eslint-disable-next-line no-control-regex
 const filenameReservedRegex = /[<>:"/\\|?*\x00-\x1F]/g;
+//eslint-disable-next-line no-control-regex
 const reControlChars = /[\u0000-\u001f\u0080-\u009f]/g;
 const reRelativePath = /^\.+/;
 
