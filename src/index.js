@@ -316,6 +316,4 @@ plugin.generateExportEntry = function (name, scopedName) {
   };
 };
 
-console.log(plugin);
-
 module.exports = plugin;

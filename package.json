@@ -11,9 +11,9 @@
     "eslint": "eslint --ignore-path .gitignore .",
     "lint": "yarn eslint && yarn prettier",
     "pretest": "yarn lint",
-    "test": "mocha",
-    "autotest": "chokidar src/index.js test/test.js -c 'yarn test'",
-    "cover": "istanbul cover test/index.js",
+    "test": "jest",
+    "autotest": "jest --watch",
+    "cover": "jest --coverage src/index.js",
     "ci": "yarn pretest && yarn cover",
     "prepublishOnly": "yarn test"
   },
@@ -40,12 +40,8 @@
   },
   "devDependencies": {
     "cssesc": "^3.0.0",
-    "chokidar-cli": "^2.1.0",
-    "codecov.io": "^0.1.6",
-    "coveralls": "^3.1.0",
     "eslint": "^7.9.0",
-    "mocha": "^8.1.3",
-    "nyc": "^15.1.0",
+    "jest": "^26.4.2",
     "postcss": "^8.0.3",
     "prettier": "^2.1.2"
   },

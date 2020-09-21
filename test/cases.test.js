@@ -1,8 +1,5 @@
 "use strict";
 
-/*globals describe it */
-
-var assert = require("assert");
 var fs = require("fs");
 var path = require("path");
 var postcss = require("postcss");
@@ -24,12 +21,13 @@ describe("test-cases", function () {
   var testDir = path.join(__dirname, "test-cases");
   fs.readdirSync(testDir).forEach(function (testCase) {
     if (fs.existsSync(path.join(testDir, testCase, "source.css"))) {
-      it("should " + testCase.replace(/-/g, " "), function () {
+      it("should " + testCase.replace(/-/g, " "), () => {
         var input = normalize(
           fs.readFileSync(path.join(testDir, testCase, "source.css"), "utf-8")
         );
 
         var expected, expectedError;
+
         if (fs.existsSync(path.join(testDir, testCase, "expected.error.txt"))) {
           expectedError = normalize(
             fs.readFileSync(
@@ -45,6 +43,7 @@ describe("test-cases", function () {
             )
           );
         }
+
         var config = { from: "/input" };
         var options = {
           generateScopedName: function (exportedName, inputPath) {
@@ -52,6 +51,7 @@ describe("test-cases", function () {
             return generateScopedName(exportedName, normalizedPath);
           },
         };
+
         if (fs.existsSync(path.join(testDir, testCase, "config.json"))) {
           config = JSON.parse(
             fs.readFileSync(
@@ -60,17 +60,19 @@ describe("test-cases", function () {
             )
           );
         }
+
         if (fs.existsSync(path.join(testDir, testCase, "options.js"))) {
           options = require(path.join(testDir, testCase, "options.js"));
         }
+
         var pipeline = postcss([generateInvalidCSS, processor(options)]);
+
         if (expectedError) {
-          assert.throws(function () {
-            // eslint-disable-next-line no-unused-vars
-            const result = pipeline.process(input, config).css;
-          }, new RegExp(expectedError));
+          expect(() => {
+            pipeline.process(input, config).css;
+          }).toThrow(new RegExp(expectedError));
         } else {
-          assert.equal(pipeline.process(input, config).css, expected);
+          expect(expected).toBe(pipeline.process(input, config).css);
         }
       });
     }
