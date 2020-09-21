@@ -1,11 +1,10 @@
 {
-	"parserOptions": {
-		"ecmaVersion": 2018
-	},
-	"env": {
-		"node": true
-	},
-	"rules": {
-		"quotes": [2, "single"]
-	}
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": "eslint:recommended"
 }

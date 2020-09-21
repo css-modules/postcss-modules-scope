@@ -1,5 +1,5 @@
 module.exports = {
-  generateScopedName: function(name, path) {
-    return '_' + name + '_';
+  generateScopedName: function (name) {
+    return "_" + name + "_";
   },
 };
