@@ -1,6 +1,6 @@
 {
   "name": "postcss-modules-scope",
-  "version": "3.0.0-rc.0",
+  "version": "3.0.0-rc.1",
   "description": "A CSS Modules transform to extract export statements from local-scope classes",
   "main": "src/index.js",
   "engines": {
@@ -10,11 +10,11 @@
     "prettier": "prettier -l --ignore-path .gitignore . \"!test/test-cases\"",
     "eslint": "eslint --ignore-path .gitignore .",
     "lint": "yarn eslint && yarn prettier",
+    "test:only": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --collectCoverageFrom=\"src/**/*\"",
     "pretest": "yarn lint",
-    "test": "jest",
-    "autotest": "jest --watch",
-    "cover": "jest --coverage --collectCoverageFrom=\"src/**/*\"",
-    "ci": "yarn pretest && yarn cover",
+    "test": "yarn test:coverage",
     "prepublishOnly": "yarn test"
   },
   "repository": {
@@ -39,10 +39,12 @@
     "postcss-selector-parser": "^6.0.3"
   },
   "devDependencies": {
-    "cssesc": "^3.0.0",
+    "coveralls": "^3.1.0",
     "eslint": "^7.9.0",
+    "husky": "^4.3.0",
     "jest": "^26.4.2",
-    "postcss": "^8.0.3",
+    "lint-staged": "^10.4.0",
+    "postcss": "^8.0.7",
     "prettier": "^2.1.2"
   },
   "peerDependencies": {

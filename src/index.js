@@ -198,15 +198,6 @@ const plugin = (options = {}) => {
 
       // Find any :local classes
       root.walkRules((rule) => {
-        if (
-          rule.nodes &&
-          rule.selector.slice(0, 2) === "--" &&
-          rule.selector.slice(-1) === ":"
-        ) {
-          // ignore custom property set
-          return;
-        }
-
         let parsedSelector = selectorParser().astSync(rule);
 
         rule.selector = traverseNode(parsedSelector.clone()).toString();
