@@ -238,20 +238,17 @@ const plugin = (options = {}) => {
 
           tokens = tokens.map((token, idx) => {
             if (idx === 0 || tokens[idx - 1] === ",") {
-
               let result = token;
 
               const localMatch = /^(\s*):local\s*\((.+?)\)/.exec(token);
               const nextLocalMatch = /:local\s*\((.+?)\)/.exec(token);
 
               if (localMatch) {
-                result = (
+                result =
                   localMatch[1] +
                   exportScopedName(localMatch[2]) +
-                  token.substr(localMatch[0].length)
-                );
+                  token.substr(localMatch[0].length);
               } else if (nextLocalMatch) {
-
                 const input = nextLocalMatch.input;
                 const matchPattern = nextLocalMatch[0];
                 const matchVal = nextLocalMatch[1];
