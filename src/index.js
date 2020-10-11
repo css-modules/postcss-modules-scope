@@ -88,7 +88,7 @@ const plugin = (options = {}) => {
 
   return {
     postcssPlugin: "postcss-modules-scope",
-    RootExit(root, { rule }) {
+    OnceExit(root, { rule }) {
       const exports = Object.create(null);
 
       function exportScopedName(name, rawName) {
@@ -202,7 +202,7 @@ const plugin = (options = {}) => {
 
         rule.selector = traverseNode(parsedSelector.clone()).toString();
 
-        rule.walkDecls(/composes|compose-with/, (decl) => {
+        rule.walkDecls(/composes|compose-with/i, (decl) => {
           const localNames = getSingleLocalNamesForComposes(parsedSelector);
           const classes = decl.value.split(/\s+/);
 
@@ -259,12 +259,12 @@ const plugin = (options = {}) => {
       });
 
       // Find any :local keyframes
-      root.walkAtRules((atrule) => {
-        if (/keyframes$/i.test(atrule.name)) {
-          const localMatch = /^\s*:local\s*\((.+?)\)\s*$/.exec(atrule.params);
+      root.walkAtRules((atRule) => {
+        if (/keyframes$/i.test(atRule.name)) {
+          const localMatch = /^\s*:local\s*\((.+?)\)\s*$/.exec(atRule.params);
 
           if (localMatch) {
-            atrule.params = exportScopedName(localMatch[1]);
+            atRule.params = exportScopedName(localMatch[1]);
           }
         }
       });
