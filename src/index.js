@@ -88,7 +88,7 @@ const plugin = (options = {}) => {
 
   return {
     postcssPlugin: "postcss-modules-scope",
-    OnceExit(root, { rule }) {
+    Once(root, { rule }) {
       const exports = Object.create(null);
 
       function exportScopedName(name, rawName) {
@@ -188,15 +188,13 @@ const plugin = (options = {}) => {
       // Find any :import and remember imported names
       const importedNames = {};
 
-      root.walkRules((rule) => {
-        if (/^:import\(.+\)$/.test(rule.selector)) {
-          rule.walkDecls((decl) => {
-            importedNames[decl.prop] = true;
-          });
-        }
+      root.walkRules(/^:import\(.+\)$/, (rule) => {
+        rule.walkDecls((decl) => {
+          importedNames[decl.prop] = true;
+        });
       });
 
-      // Find any :local classes
+      // Find any :local selectors
       root.walkRules((rule) => {
         let parsedSelector = selectorParser().astSync(rule);
 
@@ -233,30 +231,31 @@ const plugin = (options = {}) => {
           decl.remove();
         });
 
+        // Find any :local values
         rule.walkDecls((decl) => {
+          if (!/:local\s*\((.+?)\)/.test(decl.value)) {
+            return;
+          }
+
           let tokens = decl.value.split(/(,|'[^']*'|"[^"]*")/);
 
           tokens = tokens.map((token, idx) => {
             if (idx === 0 || tokens[idx - 1] === ",") {
               let result = token;
 
-              const localMatch = /^(\s*):local\s*\((.+?)\)/.exec(token);
-              const nextLocalMatch = /:local\s*\((.+?)\)/.exec(token);
+              const localMatch = /:local\s*\((.+?)\)/.exec(token);
 
               if (localMatch) {
-                result =
-                  localMatch[1] +
-                  exportScopedName(localMatch[2]) +
-                  token.substr(localMatch[0].length);
-              } else if (nextLocalMatch) {
-                const input = nextLocalMatch.input;
-                const matchPattern = nextLocalMatch[0];
-                const matchVal = nextLocalMatch[1];
+                const input = localMatch.input;
+                const matchPattern = localMatch[0];
+                const matchVal = localMatch[1];
                 const newVal = exportScopedName(matchVal);
+
                 result = input.replace(matchPattern, newVal);
               } else {
-                // do nothing
+                return token;
               }
+
               return result;
             } else {
               return token;
@@ -268,14 +267,14 @@ const plugin = (options = {}) => {
       });
 
       // Find any :local keyframes
-      root.walkAtRules((atRule) => {
-        if (/keyframes$/i.test(atRule.name)) {
-          const localMatch = /^\s*:local\s*\((.+?)\)\s*$/.exec(atRule.params);
+      root.walkAtRules(/keyframes$/i, (atRule) => {
+        const localMatch = /^\s*:local\s*\((.+?)\)\s*$/.exec(atRule.params);
 
-          if (localMatch) {
-            atRule.params = exportScopedName(localMatch[1]);
-          }
+        if (!localMatch) {
+          return;
         }
+
+        atRule.params = exportScopedName(localMatch[1]);
       });
 
       // If we found any :locals, insert an :export rule
