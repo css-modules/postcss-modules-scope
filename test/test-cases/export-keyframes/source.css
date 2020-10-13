@@ -16,3 +16,11 @@
 :local(.fadeIn) {
   animation-name: _colon_local(fade-in);
 }
+
+:local(.fadeIn) {
+  animation: 2s _colon_local(fade-in);
+}
+
+:local(.fadeIn) {
+  animation: _colon_local(fade-in) 2s;
+}
