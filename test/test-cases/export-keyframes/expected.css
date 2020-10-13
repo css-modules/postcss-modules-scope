@@ -17,6 +17,14 @@
   animation-name: _input__fade-in;
 }
 
+._input__fadeIn {
+  animation: 2s _input__fade-in;
+}
+
+._input__fadeIn {
+  animation: _input__fade-in 2s;
+}
+
 :export {
   fadeIn: _input__fadeIn;
   fade-in: _input__fade-in;
