@@ -85,13 +85,19 @@ const plugin = (options = {}) => {
   const generateExportEntry =
     (options && options.generateExportEntry) || plugin.generateExportEntry;
   const exportGlobals = options && options.exportGlobals;
+  const exportEmptyLocals =
+    !options ||
+    (typeof options.exportEmptyLocals === "undefined" ||
+    options.exportEmptyLocals === null
+      ? true
+      : options.exportEmptyLocals);
 
   return {
     postcssPlugin: "postcss-modules-scope",
     Once(root, { rule }) {
       const exports = Object.create(null);
 
-      function exportScopedName(name, rawName) {
+      function exportScopedName(name, rawName, includeSelfReference) {
         const scopedName = generateScopedName(
           rawName ? rawName : name,
           root.source.input.from,
@@ -107,30 +113,32 @@ const plugin = (options = {}) => {
 
         exports[key] = exports[key] || [];
 
-        if (exports[key].indexOf(value) < 0) {
+        if (includeSelfReference && exports[key].indexOf(value) < 0) {
           exports[key].push(value);
         }
 
         return scopedName;
       }
 
-      function localizeNode(node) {
+      function localizeNode(node, exportSelfReference) {
         switch (node.type) {
           case "selector":
-            node.nodes = node.map(localizeNode);
+            node.nodes = node.map((n) => localizeNode(n, exportSelfReference));
             return node;
           case "class":
             return selectorParser.className({
               value: exportScopedName(
                 node.value,
-                node.raws && node.raws.value ? node.raws.value : null
+                node.raws && node.raws.value ? node.raws.value : null,
+                exportSelfReference
               ),
             });
           case "id": {
             return selectorParser.id({
               value: exportScopedName(
                 node.value,
-                node.raws && node.raws.value ? node.raws.value : null
+                node.raws && node.raws.value ? node.raws.value : null,
+                exportSelfReference
               ),
             });
           }
@@ -141,7 +149,7 @@ const plugin = (options = {}) => {
         );
       }
 
-      function traverseNode(node) {
+      function traverseNode(node, exportSelfReference) {
         switch (node.type) {
           case "pseudo":
             if (node.value === ":local") {
@@ -149,7 +157,7 @@ const plugin = (options = {}) => {
                 throw new Error('Unexpected comma (",") in :local block');
               }
 
-              const selector = localizeNode(node.first);
+              const selector = localizeNode(node.first, exportSelfReference);
               // move the spaces that were around the psuedo selector to the first
               // non-container node
               selector.first.spaces = node.spaces;
@@ -172,7 +180,7 @@ const plugin = (options = {}) => {
           /* falls through */
           case "root":
           case "selector": {
-            node.each(traverseNode);
+            node.each((n) => traverseNode(n, exportSelfReference));
             break;
           }
           case "id":
@@ -197,8 +205,15 @@ const plugin = (options = {}) => {
       // Find any :local selectors
       root.walkRules((rule) => {
         let parsedSelector = selectorParser().astSync(rule);
+        const containsOwnDeclarations = rule.nodes.some(
+          (node) =>
+            node.type !== "comment" && !/^compose(s|-with)$/i.test(node.prop)
+        );
 
-        rule.selector = traverseNode(parsedSelector.clone()).toString();
+        rule.selector = traverseNode(
+          parsedSelector.clone(),
+          exportEmptyLocals || containsOwnDeclarations
+        ).toString();
 
         rule.walkDecls(/composes|compose-with/i, (decl) => {
           const localNames = getSingleLocalNamesForComposes(parsedSelector);
@@ -249,7 +264,7 @@ const plugin = (options = {}) => {
                 const input = localMatch.input;
                 const matchPattern = localMatch[0];
                 const matchVal = localMatch[1];
-                const newVal = exportScopedName(matchVal);
+                const newVal = exportScopedName(matchVal, undefined, true);
 
                 result = input.replace(matchPattern, newVal);
               } else {
@@ -274,11 +289,13 @@ const plugin = (options = {}) => {
           return;
         }
 
-        atRule.params = exportScopedName(localMatch[1]);
+        atRule.params = exportScopedName(localMatch[1], undefined, true);
       });
 
       // If we found any :locals, insert an :export rule
-      const exportedNames = Object.keys(exports);
+      const exportedNames = Object.keys(exports).filter(
+        (exportedName) => exports[exportedName].length !== 0
+      );
 
       if (exportedNames.length > 0) {
         const exportRule = rule({ selector: ":export" });
