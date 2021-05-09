@@ -149,7 +149,7 @@ const plugin = (options = {}) => {
                 throw new Error('Unexpected comma (",") in :local block');
               }
 
-              const selector = localizeNode(node.first, node.spaces);
+              const selector = localizeNode(node.first);
               // move the spaces that were around the psuedo selector to the first
               // non-container node
               selector.first.spaces = node.spaces;
