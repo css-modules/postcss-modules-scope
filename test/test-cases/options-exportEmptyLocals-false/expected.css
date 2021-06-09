@@ -1,0 +1,34 @@
+/* leaf node with contents */
+._input__layer1A {
+  color: red;
+}
+
+._input__layer2A /* doesn't add anything new */ {
+}
+
+._input__layer1B {
+  /* totally empty, except for this comment */
+}
+
+._input__layer2B {
+  background: blue;
+}
+
+._input__layer3 {
+}
+
+._input__foo  > ._input__bar {
+}
+
+._input__baz  > ._input__qux {
+  font-style: italic;
+}
+
+:export {
+  layer1A: _input__layer1A;
+  layer2A: _input__layer1A;
+  layer2B: _input__layer2B;
+  layer3: _input__layer1A _input__layer2B;
+  baz: _input__baz;
+  qux: _input__qux;
+}

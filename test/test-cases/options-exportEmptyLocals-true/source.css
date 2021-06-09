@@ -1,0 +1,29 @@
+/* leaf node with contents */
+:local(.layer1A) {
+  color: red;
+}
+
+:local(.layer2A) /* doesn't add anything new */ {
+  composes: layer1A;
+}
+
+:local(.layer1B) {
+  /* totally empty, except for this comment */
+}
+
+:local(.layer2B) {
+  background: blue;
+  composes: layer1B;
+}
+
+:local(.layer3) {
+  composes: layer2A;
+  composes: layer2B;
+}
+
+:local(.foo) /* empty */ > :local(.bar) {
+}
+
+:local(.baz) /* non-empty */ > :local(.qux) {
+  font-style: italic;
+}
