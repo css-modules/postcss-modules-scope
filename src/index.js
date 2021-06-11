@@ -134,6 +134,16 @@ const plugin = (options = {}) => {
               ),
             });
           }
+          case "attribute": {
+            if (node.attribute === "class" && node.operator === "=") {
+              return selectorParser.attribute({
+                attribute: node.attribute,
+                operator: node.operator,
+                quoteMark: "'",
+                value: exportScopedName(node.value),
+              });
+            }
+          }
         }
 
         throw new Error(

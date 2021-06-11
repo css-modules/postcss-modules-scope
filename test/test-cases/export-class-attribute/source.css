@@ -1,0 +1,11 @@
+:local(.exportName1) {
+  color: red;
+}
+
+:local(.exportName2) {
+  color: green;
+}
+
+:local(.exportName2[class="exportName1"]) {
+  color: blue;
+}

@@ -1,0 +1,16 @@
+._input__exportName1 {
+  color: red;
+}
+
+._input__exportName2 {
+  color: green;
+}
+
+._input__exportName2[class=_input__exportName1] {
+  color: blue;
+}
+
+:export {
+  exportName1: _input__exportName1;
+  exportName2: _input__exportName2;
+}
