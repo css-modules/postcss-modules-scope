@@ -88,7 +88,7 @@ const plugin = (options = {}) => {
 
   return {
     postcssPlugin: "postcss-modules-scope",
-    Once(root, { rule }) {
+    OnceExit(root, { rule }) {
       const exports = Object.create(null);
 
       function exportScopedName(name, rawName) {
