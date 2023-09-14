@@ -1,1 +1,0 @@
-attribute \("\[class\*\="exportName2\"]\"\) is not allowed in a :local block
