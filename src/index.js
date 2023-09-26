@@ -91,17 +91,19 @@ const plugin = (options = {}) => {
     Once(root, { rule }) {
       const exports = Object.create(null);
 
-      function exportScopedName(name, rawName) {
+      function exportScopedName(name, rawName, node) {
         const scopedName = generateScopedName(
           rawName ? rawName : name,
           root.source.input.from,
-          root.source.input.css
+          root.source.input.css,
+          node
         );
         const exportEntry = generateExportEntry(
           rawName ? rawName : name,
           scopedName,
           root.source.input.from,
-          root.source.input.css
+          root.source.input.css,
+          node
         );
         const { key, value } = exportEntry;
 
@@ -123,14 +125,16 @@ const plugin = (options = {}) => {
             return selectorParser.className({
               value: exportScopedName(
                 node.value,
-                node.raws && node.raws.value ? node.raws.value : null
+                node.raws && node.raws.value ? node.raws.value : null,
+                node
               ),
             });
           case "id": {
             return selectorParser.id({
               value: exportScopedName(
                 node.value,
-                node.raws && node.raws.value ? node.raws.value : null
+                node.raws && node.raws.value ? node.raws.value : null,
+                node
               ),
             });
           }
