@@ -150,7 +150,7 @@ const plugin = (options = {}) => {
               }
 
               const selector = localizeNode(node.first, node.spaces);
-              // move the spaces that were around the psuedo selector to the first
+              // move the spaces that were around the pseudo selector to the first
               // non-container node
               selector.first.spaces = node.spaces;
 
