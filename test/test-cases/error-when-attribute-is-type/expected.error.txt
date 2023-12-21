@@ -1,0 +1,1 @@
+attribute \("\[type\="text"]\"\) is not allowed in a :local block
