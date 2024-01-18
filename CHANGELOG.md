@@ -3,13 +3,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.1.1](https://github.com/postcss-modules-local-by-default/compare/v3.1.0...v3.1.1) - 2024-01-18
+
+### Fixes
+
+- handle `@scope` at-rule
+- fix CSS nesting logic
+
 ## [3.1.0](https://github.com/postcss-modules-local-by-default/compare/v3.0.0...v3.1.0) - 2023-12-21
 
 ### Fixes
 
 - scoped class attribute
 
-### Feature
+### Features
 
 - pass a node to the `generateExportEntry` option
 
