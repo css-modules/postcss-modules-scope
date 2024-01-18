@@ -1,0 +1,10 @@
+:local(.otherClassName) {
+}
+
+@media (min-width: 1024px) {
+  :local(.a) {
+    :local(.b) {
+      compose-with: otherClassName;
+    }
+  }
+}

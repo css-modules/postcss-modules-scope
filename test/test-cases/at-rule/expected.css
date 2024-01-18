@@ -1,0 +1,18 @@
+._input__otherClass {
+  background: red;
+}
+
+@media screen {
+  ._input__foo {
+    color: green;
+    ._input__baz {
+      color: blue;
+    }
+  }
+}
+
+:export {
+  otherClass: _input__otherClass;
+  foo: _input__foo;
+  baz: _input__baz;
+}

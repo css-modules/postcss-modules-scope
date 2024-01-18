@@ -1,0 +1,12 @@
+:local(.bar) {
+}
+
+@keyframes slidein {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    composes: bar;
+  }
+}

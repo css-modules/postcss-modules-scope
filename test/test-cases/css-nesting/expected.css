@@ -1,0 +1,39 @@
+._input__otherClass {
+  background: red;
+}
+
+._input__foo {
+  color: green;
+
+  @media (max-width: 520px) {
+    ._input__bar {
+      color: darkgreen;
+    }
+
+    &._input__baz {
+      color: blue;
+    }
+  }
+}
+
+._input__a {
+  color: red;
+
+  &._input__b {
+    color: green;
+  }
+
+  ._input__c {
+    color: blue;
+  }
+}
+
+:export {
+  otherClass: _input__otherClass;
+  foo: _input__foo;
+  bar: _input__bar;
+  baz: _input__baz;
+  a: _input__a;
+  b: _input__b;
+  c: _input__c;
+}

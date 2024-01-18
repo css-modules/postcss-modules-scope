@@ -1,0 +1,1 @@
+composition is only allowed in nested rule

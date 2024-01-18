@@ -1,0 +1,15 @@
+:local(.bar) {
+  color: blue;
+}
+
+:local(.foo) {
+  display: grid;
+
+  @media (orientation: landscape) {
+    grid-auto-flow: column;
+
+    @media (min-width: 1024px) {
+      composes: bar;
+    }
+  }
+}

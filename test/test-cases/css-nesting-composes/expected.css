@@ -1,0 +1,16 @@
+._input__bar {
+  color: red;
+}
+
+._input__foo {
+  display: grid;
+
+  @media (orientation: landscape) {
+    grid-auto-flow: column;
+  }
+}
+
+:export {
+  bar: _input__bar;
+  foo: _input__foo _input__bar;
+}

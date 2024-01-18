@@ -1,0 +1,8 @@
+:local(.otherClassName) {
+}
+
+:local(.a) {
+  :local(.b) {
+    compose-with: otherClassName;
+  }
+}
