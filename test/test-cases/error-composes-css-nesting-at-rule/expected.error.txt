@@ -1,1 +1,1 @@
-composition is only allowed in nested rule
+composition is not allowed in nested rule

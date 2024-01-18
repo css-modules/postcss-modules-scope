@@ -18,7 +18,7 @@ function isNestedRule(rule) {
 
 function getSingleLocalNamesForComposes(root, rule) {
   if (isNestedRule(rule)) {
-    throw new Error(`composition is only allowed in nested rule \n\n${rule}`);
+    throw new Error(`composition is not allowed in nested rule \n\n${rule}`);
   }
 
   return root.nodes.map((node) => {
