@@ -1,0 +1,29 @@
+:local(.otherClass) {
+  background: red;
+}
+
+:local(.foo) {
+  color: green;
+
+  @media (max-width: 520px) {
+    :local(.bar) {
+      color: darkgreen;
+    }
+
+    &:local(.baz) {
+      color: blue;
+    }
+  }
+}
+
+:local(.a) {
+  color: red;
+
+  &:local(.b) {
+    color: green;
+  }
+
+  :local(.c) {
+    color: blue;
+  }
+}

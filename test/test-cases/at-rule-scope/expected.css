@@ -1,0 +1,35 @@
+._input__d {
+  color: red;
+}
+
+@scope (._input__a) to (._input__b) {
+  ._input__c {
+    border: 5px solid black;
+    background-color: goldenrod;
+  }
+}
+
+@scope (._input__a) {
+  ._input__e {
+    border: 5px solid black;
+  }
+}
+
+@scope (._input__a) to (img) {
+  ._input__f {
+    background-color: goldenrod;
+  }
+}
+
+@scope (._input__g) {
+  img {
+    backdrop-filter: blur(2px);
+  }
+}
+
+:export {
+  d: _input__d;
+  c: _input__c;
+  e: _input__e;
+  f: _input__f;
+}

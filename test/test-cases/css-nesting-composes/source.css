@@ -1,0 +1,12 @@
+:local(.bar) {
+  color: red;
+}
+
+:local(.foo) {
+  display: grid;
+  composes: bar;
+
+  @media (orientation: landscape) {
+    grid-auto-flow: column;
+  }
+}

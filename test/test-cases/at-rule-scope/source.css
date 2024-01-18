@@ -1,0 +1,28 @@
+:local(.d) {
+  color: red;
+}
+
+@scope (:local(.a)) to (:local(.b)) {
+  :local(.c) {
+    border: 5px solid black;
+    background-color: goldenrod;
+  }
+}
+
+@scope (:local(.a)) {
+  :local(.e) {
+    border: 5px solid black;
+  }
+}
+
+@scope (:local(.a)) to (img) {
+  :local(.f) {
+    background-color: goldenrod;
+  }
+}
+
+@scope (:local(.g)) {
+  img {
+    backdrop-filter: blur(2px);
+  }
+}

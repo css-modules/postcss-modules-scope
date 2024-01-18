@@ -1,0 +1,12 @@
+:local(.otherClass) {
+  background: red;
+}
+
+@media screen {
+  :local(.foo) {
+    color: green;
+    :local(.baz) {
+      color: blue;
+    }
+  }
+}
