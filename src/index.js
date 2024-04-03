@@ -177,7 +177,7 @@ const plugin = (options = {}) => {
         );
       }
 
-      function traverseNode(node, needExport = true) {
+      function traverseNode(node) {
         switch (node.type) {
           case "pseudo":
             if (node.value === ":local") {
@@ -185,7 +185,7 @@ const plugin = (options = {}) => {
                 throw new Error('Unexpected comma (",") in :local block');
               }
 
-              const selector = localizeNode(node.first, needExport);
+              const selector = localizeNode(node.first);
               // move the spaces that were around the pseudo selector to the first
               // non-container node
               selector.first.spaces = node.spaces;
@@ -208,12 +208,12 @@ const plugin = (options = {}) => {
           /* falls through */
           case "root":
           case "selector": {
-            node.each((item) => traverseNode(item, needExport));
+            node.each((item) => traverseNode(item));
             break;
           }
           case "id":
           case "class":
-            if (needExport && exportGlobals) {
+            if (exportGlobals) {
               exports[node.value] = [node.value];
             }
             break;
@@ -317,22 +317,24 @@ const plugin = (options = {}) => {
       });
 
       root.walkAtRules(/scope$/i, (atRule) => {
-        atRule.params = atRule.params
-          .split("to")
-          .map((item) => {
-            const selector = item.trim().slice(1, -1).trim();
+        if (atRule.params) {
+          atRule.params = atRule.params
+            .split("to")
+            .map((item) => {
+              const selector = item.trim().slice(1, -1).trim();
 
-            const localMatch = /^\s*:local\s*\((.+?)\)\s*$/.exec(selector);
+              const localMatch = /^\s*:local\s*\((.+?)\)\s*$/.exec(selector);
 
-            if (!localMatch) {
-              return `(${selector})`;
-            }
+              if (!localMatch) {
+                return `(${selector})`;
+              }
 
-            let parsedSelector = selectorParser().astSync(selector);
+              let parsedSelector = selectorParser().astSync(selector);
 
-            return `(${traverseNode(parsedSelector, false).toString()})`;
-          })
-          .join(" to ");
+              return `(${traverseNode(parsedSelector).toString()})`;
+            })
+            .join(" to ");
+        }
       });
 
       // If we found any :locals, insert an :export rule
