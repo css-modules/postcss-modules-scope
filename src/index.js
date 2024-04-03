@@ -107,7 +107,7 @@ const plugin = (options = {}) => {
     Once(root, { rule }) {
       const exports = Object.create(null);
 
-      function exportScopedName(name, rawName, node, needExport = true) {
+      function exportScopedName(name, rawName, node) {
         const scopedName = generateScopedName(
           rawName ? rawName : name,
           root.source.input.from,
@@ -123,10 +123,6 @@ const plugin = (options = {}) => {
         );
         const { key, value } = exportEntry;
 
-        if (!needExport) {
-          return scopedName;
-        }
-
         exports[key] = exports[key] || [];
 
         if (exports[key].indexOf(value) < 0) {
@@ -136,18 +132,17 @@ const plugin = (options = {}) => {
         return scopedName;
       }
 
-      function localizeNode(node, needExport = true) {
+      function localizeNode(node) {
         switch (node.type) {
           case "selector":
-            node.nodes = node.map((item) => localizeNode(item, needExport));
+            node.nodes = node.map((item) => localizeNode(item));
             return node;
           case "class":
             return selectorParser.className({
               value: exportScopedName(
                 node.value,
                 node.raws && node.raws.value ? node.raws.value : null,
-                node,
-                needExport
+                node
               ),
             });
           case "id": {
@@ -155,8 +150,7 @@ const plugin = (options = {}) => {
               value: exportScopedName(
                 node.value,
                 node.raws && node.raws.value ? node.raws.value : null,
-                node,
-                needExport
+                node
               ),
             });
           }
@@ -166,7 +160,7 @@ const plugin = (options = {}) => {
                 attribute: node.attribute,
                 operator: node.operator,
                 quoteMark: "'",
-                value: exportScopedName(node.value, null, null, needExport),
+                value: exportScopedName(node.value, null, null),
               });
             }
           }
@@ -236,35 +230,39 @@ const plugin = (options = {}) => {
 
         rule.selector = traverseNode(parsedSelector.clone()).toString();
 
-        rule.walkDecls(/composes|compose-with/i, (decl) => {
+        rule.walkDecls(/^(composes|compose-with)$/i, (decl) => {
           const localNames = getSingleLocalNamesForComposes(
             parsedSelector,
             decl.parent
           );
-          const classes = decl.value.split(/\s+/);
+          const multiple = decl.value.split(",");
 
-          classes.forEach((className) => {
-            const global = /^global\(([^)]+)\)$/.exec(className);
+          multiple.forEach((value) => {
+            const classes = value.trim().split(/\s+/);
 
-            if (global) {
-              localNames.forEach((exportedName) => {
-                exports[exportedName].push(global[1]);
-              });
-            } else if (hasOwnProperty.call(importedNames, className)) {
-              localNames.forEach((exportedName) => {
-                exports[exportedName].push(className);
-              });
-            } else if (hasOwnProperty.call(exports, className)) {
-              localNames.forEach((exportedName) => {
-                exports[className].forEach((item) => {
-                  exports[exportedName].push(item);
+            classes.forEach((className) => {
+              const global = /^global\(([^)]+)\)$/.exec(className);
+
+              if (global) {
+                localNames.forEach((exportedName) => {
+                  exports[exportedName].push(global[1]);
                 });
-              });
-            } else {
-              throw decl.error(
-                `referenced class name "${className}" in ${decl.prop} not found`
-              );
-            }
+              } else if (hasOwnProperty.call(importedNames, className)) {
+                localNames.forEach((exportedName) => {
+                  exports[exportedName].push(className);
+                });
+              } else if (hasOwnProperty.call(exports, className)) {
+                localNames.forEach((exportedName) => {
+                  exports[className].forEach((item) => {
+                    exports[exportedName].push(item);
+                  });
+                });
+              } else {
+                throw decl.error(
+                  `referenced class name "${className}" in ${decl.prop} not found`
+                );
+              }
+            });
           });
 
           decl.remove();

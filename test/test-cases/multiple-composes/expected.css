@@ -1,0 +1,12 @@
+:import("path") {
+  i__i_a_0: a;
+  i__i_b_0: b;
+  i__i_c_0: c;
+  i__i_d_0: d;
+}
+._input__class {
+  color: red;
+}
+:export {
+  class: _input__class i__i_a_0 i__i_b_0 i__i_c_0 d e f i__i_d_0;
+}
