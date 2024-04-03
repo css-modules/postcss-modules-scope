@@ -26,3 +26,9 @@
     backdrop-filter: blur(2px);
   }
 }
+
+@scope {
+  :scope {
+    color: red;
+  }
+}

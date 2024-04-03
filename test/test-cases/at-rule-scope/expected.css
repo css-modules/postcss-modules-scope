@@ -27,9 +27,18 @@
   }
 }
 
+@scope {
+  :scope {
+    color: red;
+  }
+}
+
 :export {
   d: _input__d;
   c: _input__c;
   e: _input__e;
   f: _input__f;
+  a: _input__a;
+  b: _input__b;
+  g: _input__g;
 }
