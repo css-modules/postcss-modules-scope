@@ -236,35 +236,39 @@ const plugin = (options = {}) => {
 
         rule.selector = traverseNode(parsedSelector.clone()).toString();
 
-        rule.walkDecls(/composes|compose-with/i, (decl) => {
+        rule.walkDecls(/^(composes|compose-with)$/i, (decl) => {
           const localNames = getSingleLocalNamesForComposes(
             parsedSelector,
             decl.parent
           );
-          const classes = decl.value.split(/\s+/);
+          const multiple = decl.value.split(",");
 
-          classes.forEach((className) => {
-            const global = /^global\(([^)]+)\)$/.exec(className);
+          multiple.forEach((value) => {
+            const classes = value.trim().split(/\s+/);
 
-            if (global) {
-              localNames.forEach((exportedName) => {
-                exports[exportedName].push(global[1]);
-              });
-            } else if (hasOwnProperty.call(importedNames, className)) {
-              localNames.forEach((exportedName) => {
-                exports[exportedName].push(className);
-              });
-            } else if (hasOwnProperty.call(exports, className)) {
-              localNames.forEach((exportedName) => {
-                exports[className].forEach((item) => {
-                  exports[exportedName].push(item);
+            classes.forEach((className) => {
+              const global = /^global\(([^)]+)\)$/.exec(className);
+
+              if (global) {
+                localNames.forEach((exportedName) => {
+                  exports[exportedName].push(global[1]);
                 });
-              });
-            } else {
-              throw decl.error(
-                `referenced class name "${className}" in ${decl.prop} not found`
-              );
-            }
+              } else if (hasOwnProperty.call(importedNames, className)) {
+                localNames.forEach((exportedName) => {
+                  exports[exportedName].push(className);
+                });
+              } else if (hasOwnProperty.call(exports, className)) {
+                localNames.forEach((exportedName) => {
+                  exports[className].forEach((item) => {
+                    exports[exportedName].push(item);
+                  });
+                });
+              } else {
+                throw decl.error(
+                  `referenced class name "${className}" in ${decl.prop} not found`
+                );
+              }
+            });
           });
 
           decl.remove();

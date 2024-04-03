@@ -1,0 +1,9 @@
+._input__class {
+  a-composes: global(c);
+  composes-b: global(d);
+  a-composes-b: global(e);
+  a-compose-with-b: global(b);
+}
+:export {
+  class: _input__class a b;
+}
