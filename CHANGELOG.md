@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.2.1](https://github.com/postcss-modules-local-by-default/compare/v3.2.0...v3.2.1)
+
+### Chore
+
+- update `postcss-selector-parser`
+
 ## [3.2.0](https://github.com/postcss-modules-local-by-default/compare/v3.1.2...v3.2.0) - 2024-04-03
 
 ### Features
