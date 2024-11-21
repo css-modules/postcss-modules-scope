@@ -58,9 +58,11 @@ becomes:
 .globalButtonStyle:hover {
   box-shadow: 0 0 4px -2px;
 }
-:local(.continueButton) {
-  compose-with: globalButtonStyle;
+.__buttons_continueButton_djd347adcxz9 {
   color: green;
+}
+:export {
+  continueButton: __buttons_continueButton_djd347adcxz9 globalButtonStyle;
 }
 ```
 
