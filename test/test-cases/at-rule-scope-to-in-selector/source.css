@@ -1,0 +1,15 @@
+@scope (.innerActionsWrapper) to (.inputInnerButtons > * > *) {
+  --button-variant: transparent;
+}
+
+@scope (:local(.auto)) to (:local(.total)) {
+  color: red;
+}
+
+@scope (:local(.innerActionsWrapper)) to (:local(.inputInnerButtons)) {
+  color: blue;
+}
+
+@scope (:local(.to)) {
+  color: green;
+}

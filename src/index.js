@@ -95,6 +95,62 @@ function unescape(str) {
   });
 }
 
+function isCssIdentChar(char) {
+  return /[A-Za-z0-9_\\\u0080-\uFFFF-]/.test(char);
+}
+
+// Split @scope prelude on the `to` keyword only, not on the letters "to"
+// inside a selector (e.g. .inputInnerButtons, .auto, :local(.to)).
+function splitScopeParams(params) {
+  let depth = 0;
+  let quote = null;
+
+  for (let i = 0; i < params.length; i++) {
+    const char = params[i];
+
+    if (quote) {
+      if (char === "\\") {
+        i += 1;
+        continue;
+      }
+
+      if (char === quote) {
+        quote = null;
+      }
+
+      continue;
+    }
+
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+
+    if (char === "(") {
+      depth += 1;
+      continue;
+    }
+
+    if (char === ")") {
+      if (depth > 0) {
+        depth -= 1;
+      }
+      continue;
+    }
+
+    if (
+      depth === 0 &&
+      params.slice(i, i + 2) === "to" &&
+      (i === 0 || !isCssIdentChar(params[i - 1])) &&
+      (i + 2 >= params.length || !isCssIdentChar(params[i + 2]))
+    ) {
+      return [params.slice(0, i), params.slice(i + 2)];
+    }
+  }
+
+  return [params];
+}
+
 const plugin = (options = {}) => {
   const generateScopedName =
     (options && options.generateScopedName) || plugin.generateScopedName;
@@ -316,8 +372,7 @@ const plugin = (options = {}) => {
 
       root.walkAtRules(/scope$/i, (atRule) => {
         if (atRule.params) {
-          atRule.params = atRule.params
-            .split("to")
+          atRule.params = splitScopeParams(atRule.params)
             .map((item) => {
               const selector = item.trim().slice(1, -1).trim();
 
