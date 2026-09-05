@@ -1,0 +1,23 @@
+@scope (.innerActionsWrapper) to (.inputInnerButtons > * > *) {
+  --button-variant: transparent;
+}
+
+@scope (._input__auto) to (._input__total) {
+  color: red;
+}
+
+@scope (._input__innerActionsWrapper) to (._input__inputInnerButtons) {
+  color: blue;
+}
+
+@scope (._input__to) {
+  color: green;
+}
+
+:export {
+  auto: _input__auto;
+  total: _input__total;
+  innerActionsWrapper: _input__innerActionsWrapper;
+  inputInnerButtons: _input__inputInnerButtons;
+  to: _input__to;
+}
