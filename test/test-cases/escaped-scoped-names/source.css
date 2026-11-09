@@ -1,0 +1,23 @@
+:local(.a) {
+  color: red;
+}
+
+:local(#b) {
+  color: red;
+}
+
+:local(.a) :local(.c) {
+  color: red;
+}
+
+:local(.a):local(.c) {
+  color: red;
+}
+
+:local(.a) > :local(#b) {
+  color: red;
+}
+
+.global :local(.a) .global {
+  color: red;
+}

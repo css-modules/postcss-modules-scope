@@ -1,0 +1,29 @@
+.a\+x\/y\=\= {
+  color: red;
+}
+
+#b\+x\/y\=\= {
+  color: red;
+}
+
+.a\+x\/y\=\= .c\+x\/y\=\= {
+  color: red;
+}
+
+.a\+x\/y\=\=.c\+x\/y\=\= {
+  color: red;
+}
+
+.a\+x\/y\=\= > #b\+x\/y\=\= {
+  color: red;
+}
+
+.global .a\+x\/y\=\= .global {
+  color: red;
+}
+
+:export {
+  a: a+x/y==;
+  b: b+x/y==;
+  c: c+x/y==;
+}
