@@ -137,21 +137,28 @@ const plugin = (options = {}) => {
           case "selector":
             node.nodes = node.map((item) => localizeNode(item));
             return node;
-          case "class":
+          case "class": {
+            const scopedName = exportScopedName(
+              node.value,
+              node.raws && node.raws.value ? node.raws.value : null,
+              node
+            );
+
             return selectorParser.className({
-              value: exportScopedName(
-                node.value,
-                node.raws && node.raws.value ? node.raws.value : null,
-                node
-              ),
+              value: unescape(scopedName),
+              raws: { value: scopedName },
             });
+          }
           case "id": {
+            const scopedName = exportScopedName(
+              node.value,
+              node.raws && node.raws.value ? node.raws.value : null,
+              node
+            );
+
             return selectorParser.id({
-              value: exportScopedName(
-                node.value,
-                node.raws && node.raws.value ? node.raws.value : null,
-                node
-              ),
+              value: unescape(scopedName),
+              raws: { value: scopedName },
             });
           }
           case "attribute": {
@@ -190,7 +197,9 @@ const plugin = (options = {}) => {
                 nextNode &&
                 nextNode.type === "combinator" &&
                 nextNode.value === " " &&
-                /\\[A-F0-9]{1,6}$/.test(selector.last.value)
+                /\\[A-F0-9]{1,6}$/.test(
+                  selector.last.stringifyProperty("value")
+                )
               ) {
                 selector.last.spaces.after = " ";
               }
